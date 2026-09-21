@@ -1,0 +1,240 @@
+{
+  "$defs": {
+    "BatchDocument": {
+      "additionalProperties": false,
+      "properties": {
+        "ports": {
+          "items": {
+            "$ref": "#/$defs/PortDocument"
+          },
+          "maxItems": 128,
+          "minItems": 2,
+          "title": "Ports",
+          "type": "array"
+        }
+      },
+      "required": [
+        "ports"
+      ],
+      "title": "BatchDocument",
+      "type": "object"
+    },
+    "EdgeDocument": {
+      "additionalProperties": false,
+      "properties": {
+        "left": {
+          "$ref": "#/$defs/PortDocument"
+        },
+        "right": {
+          "$ref": "#/$defs/PortDocument"
+        }
+      },
+      "required": [
+        "left",
+        "right"
+      ],
+      "title": "EdgeDocument",
+      "type": "object"
+    },
+    "IndexDocument": {
+      "additionalProperties": false,
+      "properties": {
+        "label": {
+          "maxLength": 256,
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        },
+        "space": {
+          "maxLength": 256,
+          "minLength": 1,
+          "title": "Space",
+          "type": "string"
+        },
+        "variance": {
+          "$ref": "#/$defs/Variance"
+        }
+      },
+      "required": [
+        "label",
+        "space",
+        "variance"
+      ],
+      "title": "IndexDocument",
+      "type": "object"
+    },
+    "NodeDocument": {
+      "additionalProperties": false,
+      "properties": {
+        "indices": {
+          "items": {
+            "$ref": "#/$defs/IndexDocument"
+          },
+          "maxItems": 32,
+          "title": "Indices",
+          "type": "array"
+        },
+        "name": {
+          "maxLength": 256,
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "indices"
+      ],
+      "title": "NodeDocument",
+      "type": "object"
+    },
+    "PortDocument": {
+      "additionalProperties": false,
+      "properties": {
+        "axis": {
+          "maximum": 31,
+          "minimum": 0,
+          "title": "Axis",
+          "type": "integer"
+        },
+        "node": {
+          "maxLength": 256,
+          "minLength": 1,
+          "title": "Node",
+          "type": "string"
+        }
+      },
+      "required": [
+        "node",
+        "axis"
+      ],
+      "title": "PortDocument",
+      "type": "object"
+    },
+    "SpaceDocument": {
+      "additionalProperties": false,
+      "properties": {
+        "basis": {
+          "default": "default",
+          "maxLength": 256,
+          "minLength": 1,
+          "title": "Basis",
+          "type": "string"
+        },
+        "fiber": {
+          "anyOf": [
+            {
+              "maxLength": 256,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Fiber"
+        },
+        "id": {
+          "maxLength": 256,
+          "minLength": 1,
+          "title": "Id",
+          "type": "string"
+        },
+        "kind": {
+          "$ref": "#/$defs/SpaceKind"
+        },
+        "size": {
+          "exclusiveMinimum": 0,
+          "title": "Size",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "id",
+        "size",
+        "kind"
+      ],
+      "title": "SpaceDocument",
+      "type": "object"
+    },
+    "SpaceKind": {
+      "enum": [
+        "geometric",
+        "component",
+        "batch"
+      ],
+      "title": "SpaceKind",
+      "type": "string"
+    },
+    "Variance": {
+      "enum": [
+        "contravariant",
+        "covariant",
+        "neutral"
+      ],
+      "title": "Variance",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "description": "JSON syntax validation is followed by semantic validation via to_graph().\n\nThis is a contraction specification, not tensor storage. A future service\nresolves separate operand references and executes forward/backward in one job.",
+  "properties": {
+    "batches": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/BatchDocument"
+      },
+      "maxItems": 52,
+      "title": "Batches",
+      "type": "array"
+    },
+    "edges": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/EdgeDocument"
+      },
+      "maxItems": 2048,
+      "title": "Edges",
+      "type": "array"
+    },
+    "nodes": {
+      "items": {
+        "$ref": "#/$defs/NodeDocument"
+      },
+      "maxItems": 128,
+      "minItems": 1,
+      "title": "Nodes",
+      "type": "array"
+    },
+    "outputs": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/PortDocument"
+      },
+      "maxItems": 32,
+      "title": "Outputs",
+      "type": "array"
+    },
+    "schema_version": {
+      "const": "ricci.graph.v1",
+      "default": "ricci.graph.v1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "spaces": {
+      "items": {
+        "$ref": "#/$defs/SpaceDocument"
+      },
+      "maxItems": 4096,
+      "title": "Spaces",
+      "type": "array"
+    }
+  },
+  "required": [
+    "spaces",
+    "nodes"
+  ],
+  "title": "GraphDocument",
+  "type": "object"
+}

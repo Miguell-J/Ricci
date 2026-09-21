@@ -1,0 +1,9 @@
+# Future adapter only. No image/server is implemented by Ricci 0.1.0a1.
+id: ricci-mcp
+enabled: false
+display_name: Ricci Tensor Networks
+namespace: ricci
+transport: {type: streamable_http, url: 'http://ricci-mcp:8080/mcp'}
+health: {url: 'http://ricci-mcp:8080/health'}
+contract: {family: scientific-result, version: 1}
+metadata: {library: ricci-tensor, stage: planned}

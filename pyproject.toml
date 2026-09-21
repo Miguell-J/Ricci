@@ -1,0 +1,65 @@
+[build-system]
+requires = ["hatchling>=1.27,<2"]
+build-backend = "hatchling.build"
+
+[project]
+name = "ricci-tensor"
+version = "0.1.0a1"
+description = "Typed tensor contraction graphs for differentiable scientific computing"
+readme = "README.md"
+requires-python = ">=3.12"
+authors = [{name = "Miguel Araújo Julio"}]
+dependencies = ["torch>=2.6,<3"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Programming Language :: Python :: 3",
+  "Topic :: Scientific/Engineering :: Mathematics",
+  "Typing :: Typed",
+]
+
+[project.optional-dependencies]
+planning = ["opt-einsum>=3.4,<4"]
+interop = ["pydantic>=2.10,<3"]
+dev = [
+  "numpy>=2,<3",
+  "pytest>=8,<10", "pytest-cov>=6,<8", "hypothesis>=6.120,<7",
+  "ruff>=0.12,<1", "mypy>=1.15,<2", "build>=1.2,<2",
+  "hatchling>=1.27,<2", "opt-einsum>=3.4,<4", "pydantic>=2.10,<3",
+]
+
+[project.urls]
+Repository = "https://github.com/Miguell-J/Ricci"
+Issues = "https://github.com/Miguell-J/Ricci/issues"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/ricci"]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+files = ["src/ricci"]
+
+[[tool.mypy.overrides]]
+# opt_einsum 3.4 ships no PEP 561 marker. Keep this exception vendor-specific.
+module = ["opt_einsum", "opt_einsum.*"]
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra --strict-markers --strict-config"
+markers = ["cuda: requires CUDA hardware"]
+
+[tool.coverage.run]
+branch = true
+source = ["ricci"]
+
+[tool.coverage.report]
+show_missing = true
+fail_under = 85

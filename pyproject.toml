@@ -23,7 +23,7 @@ interop = ["pydantic>=2.10,<3"]
 dev = [
   "numpy>=2,<3",
   "pytest>=8,<10", "pytest-cov>=6,<8", "hypothesis>=6.120,<7",
-  "ruff>=0.12,<1", "mypy>=1.15,<2", "build>=1.2,<2",
+  "ruff>=0.12,<1", "mypy>=1.15,<3", "build>=1.2,<2",
   "hatchling>=1.27,<2", "opt-einsum>=3.4,<4", "pydantic>=2.10,<3",
 ]
 
